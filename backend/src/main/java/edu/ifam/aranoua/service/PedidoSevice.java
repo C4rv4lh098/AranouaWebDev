@@ -1,6 +1,7 @@
 package edu.ifam.aranoua.service;
 
 import edu.ifam.aranoua.domain.Pedido;
+import edu.ifam.aranoua.repository.ItemPedidoRepository;
 import edu.ifam.aranoua.repository.PedidoRepository;
 import edu.ifam.aranoua.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class PedidoSevice {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
     public Pedido listar(Integer id){
         Optional<Pedido> pedido = pedidoRepository.findById(id);
@@ -35,6 +39,14 @@ public class PedidoSevice {
     }
 
     public Pedido inserir(Pedido pedido){
+         Pedido pedidoSaved = pedidoRepository.save(pedido);
+
+         pedido.getItensPedido().forEach(itemPedido -> {
+             itemPedido.setPedido(pedidoSaved);
+         });
+
+        itemPedidoRepository.saveAll(pedido.getItensPedido());
+
         return pedidoRepository.save(pedido);
     }
 

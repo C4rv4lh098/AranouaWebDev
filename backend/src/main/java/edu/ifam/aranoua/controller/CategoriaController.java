@@ -19,21 +19,21 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> listar(@PathVariable Integer id){
+    public ResponseEntity<Categoria> listar(@PathVariable Integer id){
         Categoria categoria = categoriaService.listar(id);
 
         return ResponseEntity.ok().body(categoria);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> listarTodos(){
+    public ResponseEntity<List<Categoria>> listarTodos(){
         List<Categoria> categorias = categoriaService.listarTodos();
 
         return ResponseEntity.ok().body(categorias);
     }
 
     @RequestMapping(value = "/pages", method = RequestMethod.GET)
-    public ResponseEntity<?> listarPagina(
+    public ResponseEntity<Page<Categoria>> listarPagina(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "3") Integer size,
             @RequestParam(value = "ord", defaultValue = "descricao") String ord,
@@ -44,7 +44,7 @@ public class CategoriaController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> inserir(@RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> inserir(@RequestBody Categoria categoria){
      categoria = categoriaService.inserir(categoria);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
 
@@ -52,14 +52,14 @@ public class CategoriaController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> atualizar(@PathVariable Integer id, @RequestBody Categoria categoria){
         categoria = categoriaService.atualizar(id, categoria);
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> excluir(@PathVariable Integer id){
+    public ResponseEntity<Categoria> excluir(@PathVariable Integer id){
         categoriaService.excluir(id);
 
         return ResponseEntity.noContent().build();

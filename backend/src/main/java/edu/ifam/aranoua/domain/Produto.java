@@ -1,7 +1,11 @@
 package edu.ifam.aranoua.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +22,10 @@ public class Produto implements Serializable {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+
+    @OneToMany(mappedBy = "produto")
+    @JsonIgnore
+    private List<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
 
     public Produto(){
 
@@ -60,6 +68,14 @@ public class Produto implements Serializable {
 
     public void setPreco(Float preco) {
         this.preco = preco;
+    }
+
+    public List<ItemPedido> getItensPedido() {
+        return itensPedido;
+    }
+
+    public void setItensPedido(List<ItemPedido> itensPedido) {
+        this.itensPedido = itensPedido;
     }
 
     @Override

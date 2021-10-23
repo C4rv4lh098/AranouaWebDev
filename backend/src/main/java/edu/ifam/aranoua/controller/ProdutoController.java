@@ -19,21 +19,21 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> listar(@PathVariable Integer id){
+    public ResponseEntity<Produto> listar(@PathVariable Integer id){
         Produto produto = produtoService.listar(id);
 
         return ResponseEntity.ok().body(produto);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> listarTodos(){
+    public ResponseEntity<List<Produto>> listarTodos(){
         List<Produto> produtos = produtoService.listarTodos();
 
         return ResponseEntity.ok().body(produtos);
     }
 
     @RequestMapping(value = "/pages", method = RequestMethod.GET)
-    public ResponseEntity<?> listarPagina(
+    public ResponseEntity<Page<Produto>> listarPagina(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "3") Integer size,
             @RequestParam(value = "ord", defaultValue = "descricao") String ord,
@@ -44,7 +44,7 @@ public class ProdutoController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> inserir(@RequestBody Produto produto){
+    public ResponseEntity<Produto> inserir(@RequestBody Produto produto){
         produto = produtoService.inserir(produto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId()).toUri();
 
@@ -52,14 +52,14 @@ public class ProdutoController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody Produto produto){
+    public ResponseEntity<Produto> atualizar(@PathVariable Integer id, @RequestBody Produto produto){
         produto = produtoService.atualizar(id, produto);
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public  ResponseEntity<?> excluir(@PathVariable Integer id){
+    public  ResponseEntity<Produto> excluir(@PathVariable Integer id){
         produtoService.excluir(id);
 
         return ResponseEntity.noContent().build();
