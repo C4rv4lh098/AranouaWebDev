@@ -1,9 +1,11 @@
 package edu.ifam.aranoua.service;
 
+import edu.ifam.aranoua.domain.Categoria;
 import edu.ifam.aranoua.domain.Produto;
 import edu.ifam.aranoua.repository.ProdutoRepository;
 import edu.ifam.aranoua.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -45,6 +47,12 @@ public class ProdutoService {
 
     public void excluir(Integer id){
         listar(id);
-        produtoRepository.deleteById(id);
+
+        try{
+            produtoRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException
+                    ("Não foi possível realizar a exclusão! " + "ID: " + id + ", Tipo: " + Produto.class.getName());
+        }
     }
 }

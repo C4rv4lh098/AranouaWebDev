@@ -4,6 +4,7 @@ import edu.ifam.aranoua.domain.Categoria;
 import edu.ifam.aranoua.repository.CategoriaRepository;
 import edu.ifam.aranoua.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -45,6 +46,12 @@ public class CategoriaService {
 
     public void excluir(Integer id){
         listar(id);
-        categoriaRepository.deleteById(id);
+
+        try{
+            categoriaRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException
+                    ("Não foi possível realizar a exclusão! " + "ID: " + id + ", Tipo: " + Categoria.class.getName());
+        }
     }
 }

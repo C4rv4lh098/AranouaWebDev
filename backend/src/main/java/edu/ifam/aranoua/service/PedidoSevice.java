@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,11 +53,26 @@ public class PedidoSevice {
 
     public Pedido atualizar(Integer id, Pedido pedido){
         pedido.setId(id);
+
+        pedido.getItensPedido().forEach(itemPedido -> {
+            pedido.setId(id);
+        });
+
+        itemPedidoRepository.saveAll(pedido.getItensPedido());
+
         return pedidoRepository.save(pedido);
     }
 
     public void excluir(Integer id){
-        listar(id);
+        Pedido pedido = listar(id);
+
+        List<Integer> ids = new ArrayList<>();
+        pedido.getItensPedido().forEach(itemPedido -> {
+            ids.add(itemPedido.getId());
+        });
+
+        itemPedidoRepository.deleteAllById(ids);
+
         pedidoRepository.deleteById(id);
     }
 }
