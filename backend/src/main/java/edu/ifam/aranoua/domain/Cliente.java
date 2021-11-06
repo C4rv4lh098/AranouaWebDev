@@ -1,6 +1,7 @@
 package edu.ifam.aranoua.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.ifam.aranoua.enuns.PerfilEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +20,10 @@ public class Cliente implements Serializable {
     private String nome;
     private String email;
     private String cpf;
+    private String senha;
+
+    @Enumerated(EnumType.STRING)
+    private PerfilEnum perfil;
 
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
@@ -28,11 +33,13 @@ public class Cliente implements Serializable {
 
     }
 
-    public Cliente(Integer id, String nome,String email, String cpf){
+    public Cliente(Integer id, String nome,String email, String cpf, String senha, PerfilEnum perfil){
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
+        this.senha = senha;
+        this.perfil = perfil;
     }
 
     public List<Pedido> getPedidos() {
@@ -73,6 +80,22 @@ public class Cliente implements Serializable {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public PerfilEnum getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(PerfilEnum perfil) {
+        this.perfil = perfil;
     }
 
     @Override
