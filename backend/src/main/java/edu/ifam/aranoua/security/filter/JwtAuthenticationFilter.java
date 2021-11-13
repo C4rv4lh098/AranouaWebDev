@@ -48,6 +48,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throws IOException, ServletException{
         String cpf = ((JwtUser) authResult.getPrincipal()).getUsername();
         String token = jwtUtil.gerarToken(cpf);
-        response.addHeader("Authorization", "Bearer" + token);
+        response.addHeader("Authorization", "Bearer " + token);
     }
 }
